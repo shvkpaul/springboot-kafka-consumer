@@ -13,3 +13,7 @@ Import this maven project in your IDE (I am using IntelliJ IDEA).
 ## H2 console
 
 H2 console : http://localhost:8092/h2-console
+
+* Database query
+  SELECT * FROM LIBRARY_EVENT;
+  SELECT * FROM BOOK ;

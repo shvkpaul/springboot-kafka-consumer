@@ -1,4 +1,4 @@
-package com.shvk.libraryeventconsumer.consumer;
+package com.shvk.libraryeventsconsumer.consumer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

@@ -1,4 +1,4 @@
-package com.shvk.libraryeventconsumer.config;
+package com.shvk.libraryeventsconsumer.config;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.kafka.ConcurrentKafkaListenerContainerFactoryConfigurer;
@@ -13,10 +13,10 @@ import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 
 @Configuration
 //@EnableKafka
-public class LibraryEventConsumerConfig {
+public class LibraryEventsConsumerConfig {
     private final KafkaProperties properties;
 
-    public LibraryEventConsumerConfig(KafkaProperties properties) {
+    public LibraryEventsConsumerConfig(KafkaProperties properties) {
         this.properties = properties;
     }
 

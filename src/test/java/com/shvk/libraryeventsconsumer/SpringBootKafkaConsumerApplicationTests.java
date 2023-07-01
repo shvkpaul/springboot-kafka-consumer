@@ -1,4 +1,4 @@
-package com.shvk.libraryeventconsumer;
+package com.shvk.libraryeventsconsumer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
