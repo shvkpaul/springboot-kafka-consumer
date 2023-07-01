@@ -38,7 +38,7 @@ public class LibraryEventsService {
         switch (libraryEvent.getLibraryEventType()) {
             case NEW -> save(libraryEvent);
             case UPDATE -> {
-                //validate the libraryevent
+                //validate the libraryEvent
                 validate(libraryEvent);
                 save(libraryEvent);
             }
