@@ -10,6 +10,8 @@ import org.springframework.kafka.config.ContainerCustomizer;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
+import org.springframework.kafka.listener.DefaultErrorHandler;
+import org.springframework.util.backoff.FixedBackOff;
 
 @Configuration
 //@EnableKafka
@@ -20,6 +22,16 @@ public class LibraryEventsConsumerConfig {
         this.properties = properties;
     }
 
+    public DefaultErrorHandler errorHandler() {
+
+        var fixedBackOff = new FixedBackOff(1000L, 2L);
+
+        var defaultErrorHandler = new DefaultErrorHandler(
+            fixedBackOff
+        );
+
+        return defaultErrorHandler;
+    }
     @Bean
     ConcurrentKafkaListenerContainerFactory<?, ?> kafkaListenerContainerFactory(
         ConcurrentKafkaListenerContainerFactoryConfigurer configurer,
@@ -31,6 +43,7 @@ public class LibraryEventsConsumerConfig {
         factory.setConcurrency(3); // not necessary if service is running in kubernetes
         //factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
         // we will be using default batch commit
+        factory.setCommonErrorHandler(errorHandler());// adding custom error handler
         return factory;
     }
 }
