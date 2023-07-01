@@ -1,5 +1,6 @@
 package com.shvk.libraryeventsconsumer.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.kafka.ConcurrentKafkaListenerContainerFactoryConfigurer;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -14,7 +15,8 @@ import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.util.backoff.FixedBackOff;
 
 @Configuration
-//@EnableKafka
+//@EnableKafka not needed in the updated version
+@Slf4j
 public class LibraryEventsConsumerConfig {
     private final KafkaProperties properties;
 
@@ -26,12 +28,18 @@ public class LibraryEventsConsumerConfig {
 
         var fixedBackOff = new FixedBackOff(1000L, 2L);
 
-        var defaultErrorHandler = new DefaultErrorHandler(
+        var errorHandler = new DefaultErrorHandler(
             fixedBackOff
         );
 
-        return defaultErrorHandler;
+        errorHandler.setRetryListeners(
+            (record, ex, deliveryAttempt) ->
+                log.info("Failed Record in Retry Listener  exception : {} , deliveryAttempt : {} ", ex.getMessage(), deliveryAttempt)
+        );
+
+        return errorHandler;
     }
+
     @Bean
     ConcurrentKafkaListenerContainerFactory<?, ?> kafkaListenerContainerFactory(
         ConcurrentKafkaListenerContainerFactoryConfigurer configurer,

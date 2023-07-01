@@ -141,7 +141,5 @@ public class LibraryEventsConsumerIntegrationTest {
         // custom error handler
         verify(libraryEventsConsumerSpy, times(3)).onMessage(isA(ConsumerRecord.class));
         verify(libraryEventsServiceSpy, times(3)).processLibraryEvent(isA(ConsumerRecord.class));
-
     }
-
 }
