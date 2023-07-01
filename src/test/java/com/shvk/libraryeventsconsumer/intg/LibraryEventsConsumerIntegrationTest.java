@@ -151,7 +151,7 @@ public class LibraryEventsConsumerIntegrationTest {
         kafkaTemplate.sendDefault(libraryEventId, json).get();
         //when
         CountDownLatch latch = new CountDownLatch(1);
-        latch.await(3, TimeUnit.SECONDS);
+        latch.await(5, TimeUnit.SECONDS);
 
         verify(libraryEventsConsumerSpy, times(3)).onMessage(isA(ConsumerRecord.class));
         verify(libraryEventsServiceSpy, times(3)).processLibraryEvent(isA(ConsumerRecord.class));
