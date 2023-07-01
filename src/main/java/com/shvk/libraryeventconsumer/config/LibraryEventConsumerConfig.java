@@ -28,7 +28,7 @@ public class LibraryEventConsumerConfig {
         ConcurrentKafkaListenerContainerFactory<Object, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
         configurer.configure(factory, kafkaConsumerFactory
             .getIfAvailable(() -> new DefaultKafkaConsumerFactory<>(this.properties.buildConsumerProperties())));
-        factory.setConcurrency(3);
+        factory.setConcurrency(3); // not necessary if service is running in kubernetes
         //factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
         // we will be using default batch commit
         return factory;

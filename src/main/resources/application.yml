@@ -16,3 +16,24 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.IntegerDeserializer
       value-serializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: library-events-listener-group
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+  jpa:
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: true
+  h2:
+    console:
+      enabled: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: nonprod
+  kafka:
+    consumer:
+      bootstrap-servers: nonprod:9092,nonprod:9093,nonprod:9094
+      key-deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
