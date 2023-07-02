@@ -70,10 +70,10 @@ public class LibraryEventsConsumerConfig {
 
         var fixedBackOff = new FixedBackOff(1000L, 2L);
 
-        ExponentialBackOffWithMaxRetries expBackOff = new ExponentialBackOffWithMaxRetries(2);
-        expBackOff.setInitialInterval(1_000L);
-        expBackOff.setMultiplier(2.0);
-        expBackOff.setMaxInterval(2_000L);
+//        ExponentialBackOffWithMaxRetries expBackOff = new ExponentialBackOffWithMaxRetries(2);
+//        expBackOff.setInitialInterval(1_000L);
+//        expBackOff.setMultiplier(2.0);
+//        expBackOff.setMaxInterval(2_000L);
 
         var errorHandler = new DefaultErrorHandler(
             publishingRecoverer(),
@@ -100,7 +100,7 @@ public class LibraryEventsConsumerConfig {
         ConcurrentKafkaListenerContainerFactory<Object, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
         configurer.configure(factory, kafkaConsumerFactory
             .getIfAvailable(() -> new DefaultKafkaConsumerFactory<>(this.properties.buildConsumerProperties())));
-        factory.setConcurrency(3); // not necessary if service is running in kubernetes
+        //factory.setConcurrency(3); // not necessary if service is running in kubernetes
         //factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
         // we will be using default batch commit
         factory.setCommonErrorHandler(errorHandler());// adding custom error handler
