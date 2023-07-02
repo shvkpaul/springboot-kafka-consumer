@@ -17,3 +17,9 @@ H2 console : http://localhost:8092/h2-console
 * Database query
   SELECT * FROM LIBRARY_EVENT;
   SELECT * FROM BOOK ;
+
+## Kafka 
+```
+List the topics in a cluster
+docker exec --interactive --tty kafka1 kafka-topics --bootstrap-server kafka1:19092 --list
+```

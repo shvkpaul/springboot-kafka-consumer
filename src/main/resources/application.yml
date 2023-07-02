@@ -4,6 +4,10 @@ server:
 spring:
   profiles:
     active: local
+
+topics:
+  retry: 'library-events.RETRY'
+  dlt: 'library-events.DLT'
 ---
 spring:
   config:

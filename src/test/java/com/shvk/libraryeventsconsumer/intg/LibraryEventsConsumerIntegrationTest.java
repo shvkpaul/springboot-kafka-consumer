@@ -30,16 +30,19 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.atLeast;
 
 
 @SpringBootTest
-@EmbeddedKafka(topics = {"library-events"}
+@EmbeddedKafka(topics = {"library-events"
+    , "library-events.RETRY"
+    , "library-events.DLT"
+}
     , partitions = 3)
 @TestPropertySource(properties = {"spring.kafka.producer.bootstrap-servers=${spring.embedded.kafka.brokers}"
     , "spring.kafka.consumer.bootstrap-servers=${spring.embedded.kafka.brokers}"
-})
+    , "retryListener.startup=false"})
 public class LibraryEventsConsumerIntegrationTest {
 
 
@@ -151,9 +154,15 @@ public class LibraryEventsConsumerIntegrationTest {
         kafkaTemplate.sendDefault(libraryEventId, json).get();
         //when
         CountDownLatch latch = new CountDownLatch(1);
-        latch.await(5, TimeUnit.SECONDS);
+        latch.await(3, TimeUnit.SECONDS);
 
-        verify(libraryEventsConsumerSpy, times(3)).onMessage(isA(ConsumerRecord.class));
-        verify(libraryEventsServiceSpy, times(3)).processLibraryEvent(isA(ConsumerRecord.class));
+        // Without Retry Listener
+//        verify(libraryEventsConsumerSpy, times(3)).onMessage(isA(ConsumerRecord.class));
+//        verify(libraryEventsServiceSpy, times(3)).processLibraryEvent(isA(ConsumerRecord.class));
+
+        //with Retry listener
+        verify(libraryEventsConsumerSpy, atLeast(3)).onMessage(isA(ConsumerRecord.class));
+        verify(libraryEventsServiceSpy, atLeast(3)).processLibraryEvent(isA(ConsumerRecord.class));
+
     }
 }
